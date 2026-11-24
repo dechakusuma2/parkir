@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "b95aef2242bb3dce2389c238b7ec69bf",
+=======
+    "content-hash": "cda2add6397422fb1a2eb5b9207f1575",
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
     "packages": [
         {
             "name": "brick/math",
@@ -6040,6 +6044,7 @@
     ],
     "packages-dev": [
         {
+<<<<<<< HEAD
             "name": "composer/semver",
             "version": "3.4.4",
             "source": {
@@ -6117,6 +6122,8 @@
             "time": "2025-08-20T19:15:30+00:00"
         },
         {
+=======
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
             "name": "fakerphp/faker",
             "version": "v1.24.1",
             "source": {
@@ -6368,6 +6375,7 @@
             "time": "2026-04-29T18:32:34+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "laravel/boost",
             "version": "v2.10.4",
             "source": {
@@ -6509,6 +6517,8 @@
             "time": "2026-09-14T14:35:19+00:00"
         },
         {
+=======
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
             "name": "laravel/pail",
             "version": "v1.2.7",
             "source": {
@@ -6744,6 +6754,7 @@
             "time": "2026-09-08T17:10:00+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "laravel/roster",
             "version": "v1.0.0",
             "source": {
@@ -6806,6 +6817,8 @@
             "time": "2026-07-18T17:53:15+00:00"
         },
         {
+=======
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
             "name": "mockery/mockery",
             "version": "1.6.15",
             "source": {
@@ -8570,6 +8583,7 @@
             "time": "2024-10-20T05:08:20+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "symfony/yaml",
             "version": "v8.1.6",
             "source": {
@@ -8646,6 +8660,8 @@
             "time": "2026-08-30T01:03:44+00:00"
         },
         {
+=======
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
             "name": "theseer/tokenizer",
             "version": "2.0.1",
             "source": {

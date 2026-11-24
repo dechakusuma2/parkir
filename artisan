@@ -6,11 +6,17 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));
 
+<<<<<<< HEAD
 // Memuat autoloader Composer untuk menyediakan kelas yang dibutuhkan Artisan.
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 
 // Menyiapkan aplikasi dan meneruskan perintah CLI ke kernel Laravel.
+=======
+// Register the Composer autoloader...
+require __DIR__.'/vendor/autoload.php';
+
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
 // Bootstrap Laravel and handle the command...
 /** @var Application $app */
 $app = require_once __DIR__.'/bootstrap/app.php';

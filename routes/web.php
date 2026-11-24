@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaController;
@@ -59,3 +60,14 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
     Route::post('/keluar', [PetugasController::class, 'kendaraanKeluar'])->name('keluar.proses');
     Route::get('/struk/{id}', [PetugasController::class, 'cetakStruk'])->name('struk');
 });
+=======
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JokeController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/joke', [JokeController::class, 'index'])->name('joke.index');
+Route::post('/joke/fetch', [JokeController::class, 'fetchJoke'])->name('joke.fetch');
+>>>>>>> 2719a8768e6bc6c45f29cf2c011aecb1c6686891
