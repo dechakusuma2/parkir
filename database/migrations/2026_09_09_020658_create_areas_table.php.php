@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Membuat tabel area atau menambahkan kolom jumlah terisi jika tabel telah ada.
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         if (Schema::hasTable('areas')) {
-            if (!Schema::hasColumn('areas', 'terisi')) {
+            if (! Schema::hasColumn('areas', 'terisi')) {
                 Schema::table('areas', function (Blueprint $table) {
                     $table->integer('terisi')->default(0);
                 });
             }
+
             return;
         }
 
@@ -30,6 +32,7 @@ return new class extends Migration
         });
     }
 
+    // Menghapus tabel area saat migrasi dibatalkan.
     /**
      * Reverse the migrations.
      */

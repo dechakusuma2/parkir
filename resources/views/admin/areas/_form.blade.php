@@ -1,3 +1,4 @@
+{{-- Komponen bersama untuk mengisi identitas, kapasitas, dan keterangan area. --}}
 <div class="mb-3">
     <label class="form-label fw-semibold">Nama Area <span class="text-danger">*</span></label>
     <input type="text" name="nama_area" class="form-control"

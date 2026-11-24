@@ -48,6 +48,7 @@ interface AdminMasterViewProps {
   onLogout: () => void;
 }
 
+/** Menyediakan simulasi pengelolaan tarif, area, kategori, pengguna, dan audit. */
 export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   onShowToast,
   onLogout,
@@ -56,35 +57,35 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     'tarif' | 'area' | 'kategori' | 'user' | 'audit'
   >('tarif');
 
-  // Data states
+  // Menyimpan data master awal yang dapat dikelola di antarmuka admin demo.
   const [tariffs, setTariffs] = useState<VehicleTariff[]>(INITIAL_TARIFFS);
   const [areas, setAreas] = useState<ParkingArea[]>(INITIAL_AREAS);
   const [categories, setCategories] = useState<VehicleCategory[]>(INITIAL_CATEGORIES);
   const [users, setUsers] = useState<StaffUser[]>(INITIAL_USERS);
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>(INITIAL_AUDIT_LOGS);
 
-  // Modals
+  // Menyimpan objek terpilih dan status modal edit atau pembuatan data.
   const [editingTariff, setEditingTariff] = useState<VehicleTariff | null>(null);
   const [isAreaModalOpen, setIsAreaModalOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<StaffUser | null>(null);
   const [selectedDenahArea, setSelectedDenahArea] = useState<ParkingArea | null>(null);
 
-  // In-card quick edit for motor
+  // Menyimpan nilai saat admin mengubah tarif motor melalui kartu ringkasan.
   const [isMotorEditing, setIsMotorEditing] = useState(false);
   const [motorJam1, setMotorJam1] = useState(2000);
   const [motorJamNext, setMotorJamNext] = useState(1000);
   const [motorDenda, setMotorDenda] = useState(25000);
 
-  // User search & filter
+  // Menyimpan kata kunci dan filter peran untuk daftar pengguna.
   const [userQuery, setUserQuery] = useState('');
   const [userRoleFilter, setUserRoleFilter] = useState('ALL');
 
-  // Audit filter & search
+  // Menyimpan kata kunci dan kategori untuk daftar log audit.
   const [auditFilter, setAuditFilter] = useState<string>('all');
   const [auditSearch, setAuditSearch] = useState('');
 
-  // Form states
+  // Menyimpan nilai yang sedang dimasukkan pada formulir area dan pengguna.
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaType, setNewAreaType] = useState('Mobil (Roda 4)');
   const [newAreaCapacity, setNewAreaCapacity] = useState('100');
@@ -94,7 +95,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
   const [userRole, setUserRole] = useState<'Petugas' | 'Admin' | 'Owner'>('Petugas');
   const [userUnit, setUserUnit] = useState('POS Gate Utama');
 
-  // Handlers
+  // Menyimpan tarif motor yang diedit cepat dan menampilkan konfirmasi.
   const handleSaveQuickMotor = () => {
     setTariffs((prev) =>
       prev.map((t) =>
@@ -112,10 +113,12 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     onShowToast('Tarif Sepeda Motor berhasil diperbarui!', 'success');
   };
 
+  // Menyalin tarif terpilih ke state modal untuk proses penyuntingan.
   const handleOpenEditTariff = (t: VehicleTariff) => {
     setEditingTariff({ ...t });
   };
 
+  // Memvalidasi dan menyimpan perubahan tarif dari modal edit.
   const handleSaveModalTariff = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingTariff) return;
@@ -126,6 +129,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     onShowToast(`Tarif ${editingTariff.categoryName} berhasil disimpan`, 'success');
   };
 
+  // Membuat area parkir baru berdasarkan nilai formulir admin.
   const handleAddArea = (e: React.FormEvent) => {
     e.preventDefault();
     const capacityNum = parseInt(newAreaCapacity, 10) || 100;
@@ -147,6 +151,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     onShowToast(`Area ${newArea.name} berhasil didaftarkan`, 'success');
   };
 
+  // Membalik status aktif pengguna dan memberi tahu admin tentang perubahan.
   const handleToggleUserStatus = (id: string) => {
     setUsers((prev) =>
       prev.map((u) => {
@@ -160,6 +165,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     );
   };
 
+  // Mengisi atau mereset formulir pengguna lalu membuka modalnya.
   const handleOpenUserModal = (u?: StaffUser) => {
     if (u) {
       setEditingUser(u);
@@ -177,6 +183,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     setIsUserModalOpen(true);
   };
 
+  // Menyimpan pembaruan pengguna atau menambahkan akun staf baru.
   const handleSaveUser = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingUser) {
@@ -216,6 +223,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     setIsUserModalOpen(false);
   };
 
+  // Menyaring daftar pengguna berdasarkan kata kunci dan peran.
   const filteredUsers = users.filter((u) => {
     const q = userQuery.toLowerCase();
     const matchesQuery =
@@ -226,6 +234,7 @@ export const AdminMasterView: React.FC<AdminMasterViewProps> = ({
     return matchesQuery && matchesRole;
   });
 
+  // Menyaring riwayat audit berdasarkan kata kunci dan kategori aktivitas.
   const filteredAuditLogs = auditLogs.filter((log) => {
     const q = auditSearch.toLowerCase();
     const matchesQuery =

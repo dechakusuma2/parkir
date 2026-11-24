@@ -9,6 +9,7 @@ interface DenahModalProps {
   onUpdateAreaSlots?: (areaId: string, newOccupied: number) => void;
 }
 
+/** Menampilkan simulasi denah slot parkir dan memperbarui status slot terpilih. */
 export const DenahModal: React.FC<DenahModalProps> = ({
   isOpen,
   onClose,
@@ -17,7 +18,7 @@ export const DenahModal: React.FC<DenahModalProps> = ({
 }) => {
   if (!isOpen || !area) return null;
 
-  // Stalls generation based on area
+  // Menentukan jumlah slot simulasi dan jumlah awal slot yang terisi.
   const totalStalls = area.code === 'VIP' ? 15 : area.code === 'A' ? 24 : 32;
   const initialOccupiedCount = Math.round(
     (area.occupiedSlots / area.totalSlots) * totalStalls
@@ -33,6 +34,7 @@ export const DenahModal: React.FC<DenahModalProps> = ({
 
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
+  // Mengubah status slot dan meneruskan jumlah terisi ke pemanggil.
   const toggleSlot = (slotNum: number) => {
     setOccupiedSlots((prev) => {
       const next = { ...prev, [slotNum]: !prev[slotNum] };
@@ -159,7 +161,7 @@ export const DenahModal: React.FC<DenahModalProps> = ({
             </div>
             <button
               onClick={() => {
-                // Randomize simulation
+                // Menghasilkan pola keterisian acak untuk simulasi sensor.
                 const next: Record<number, boolean> = {};
                 for (let i = 1; i <= totalStalls; i++) {
                   next[i] = Math.random() > 0.4;

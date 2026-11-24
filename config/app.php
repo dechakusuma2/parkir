@@ -1,5 +1,6 @@
 <?php
 
+// Menyediakan pengaturan identitas, lingkungan, lokalisasi, dan enkripsi aplikasi.
 return [
 
     /*

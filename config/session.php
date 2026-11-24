@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// Mengatur media penyimpanan sesi, masa berlaku, serta atribut cookie sesi.
 return [
 
     /*

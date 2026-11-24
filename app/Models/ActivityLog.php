@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth; // <-- TAMBAHKAN INI
 
+/** Merepresentasikan catatan aktivitas beserta relasi pengguna dan lencana. */
 class ActivityLog extends Model
 {
+    /** Menentukan tabel dan kolom yang dapat diisi untuk catatan aktivitas. */
     protected $table = 'activity_logs';
 
     protected $fillable = [
@@ -18,17 +20,20 @@ class ActivityLog extends Model
         'url',
     ];
 
+    /** Mengubah cap waktu aktivitas menjadi objek tanggal. */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
+    /** Menghubungkan catatan aktivitas dengan pengguna pembuatnya. */
     public function user()
     {
         return $this->belongsTo(User::class)->withDefault(['name' => 'System']);
     }
 
-    public static function log($aktivitas, $deskripsi = null)
+    /** Membuat catatan aktivitas beserta konteks permintaan saat ini. */
+    public static function log(string $aktivitas, ?string $deskripsi = null): static
     {
         return static::create([
             'user_id'    => Auth::id(), // <-- PERBAIKAN: Gunakan Auth::id()
@@ -40,6 +45,7 @@ class ActivityLog extends Model
         ]);
     }
 
+    /** Menyediakan HTML lencana berdasarkan jenis aktivitas. */
     public function getAktivitasBadgeAttribute(): string
     {
         $badges = [

@@ -1,5 +1,6 @@
 <?php
 
+// Menyimpan pengaturan kredensial layanan pihak ketiga melalui variabel lingkungan.
 return [
 
     /*

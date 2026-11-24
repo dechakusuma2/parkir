@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 /**
  * @extends Factory<User>
  */
+/** Menyediakan data acak pengguna untuk kebutuhan pengujian dan seeding. */
 class UserFactory extends Factory
 {
     /**
@@ -22,6 +23,7 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    // Membuat data pengguna palsu sebagai nilai bawaan untuk pengujian.
     public function definition(): array
     {
         return [
@@ -36,6 +38,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
+    // Menghasilkan kondisi pengguna yang belum memverifikasi alamat email.
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [

@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan formulir untuk membuat akun pengguna baru. --}}
+@extends('layouts.admin')
 @section('title', 'Tambah User')
 @section('page-title', 'Tambah User')
-@section('sidebar') @show
-
 @section('content')
 <div class="card card-custom p-4" style="max-width:600px;">
     <h5 class="fw-bold mb-4" style="color:var(--primary);">
@@ -10,6 +9,7 @@
     </h5>
     <form action="/admin/users" method="POST">
         @csrf
+        {{-- Menggunakan kembali bidang pengguna untuk alur tambah dan edit. --}}
         @include('admin.users._form')
         <div class="d-flex gap-2 mt-4">
             <button class="btn btn-primary-custom"><i class="bi bi-save"></i> Simpan</button>

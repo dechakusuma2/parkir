@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// Mendefinisikan penyimpanan cache, awalan kunci, dan kebijakan serialisasi cache.
 return [
 
     /*

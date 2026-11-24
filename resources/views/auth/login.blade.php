@@ -1,3 +1,4 @@
+{{-- Menampilkan halaman login beserta validasi, opsi ingat akun, dan tautan kembali. --}}
 @extends('layouts.app')
 @section('title', 'Login')
 
@@ -17,6 +18,7 @@
 
                     @include('components.alert')
 
+                    {{-- Form autentikasi mengirim email, kata sandi, dan opsi sesi. --}}
                     <form method="POST" action="/login">
                         @csrf
                         <div class="mb-3">

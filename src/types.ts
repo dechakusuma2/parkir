@@ -1,7 +1,10 @@
+/** Peran yang tersedia pada antarmuka simulasi parkir. */
 export type UserRole = 'petugas' | 'admin' | 'owner';
 
+/** Tab utama yang dapat dibuka melalui navigasi aplikasi. */
 export type NavTab = 'overview' | 'pos-petugas' | 'admin-master' | 'owner-rekap';
 
+/** Bentuk data tarif dan aturan biaya untuk satu kategori kendaraan. */
 export interface VehicleTariff {
   id: string;
   categoryName: string;
@@ -15,6 +18,7 @@ export interface VehicleTariff {
   allowedArea?: string;
 }
 
+/** Bentuk data kapasitas, status, dan sensor pada satu area parkir. */
 export interface ParkingArea {
   id: string;
   name: string;
@@ -29,6 +33,7 @@ export interface ParkingArea {
   isRfidOnly?: boolean;
 }
 
+/** Informasi kategori kendaraan yang ditampilkan sebagai data referensi. */
 export interface VehicleCategory {
   id: string;
   code: string;
@@ -37,6 +42,7 @@ export interface VehicleCategory {
   imageUrl: string;
 }
 
+/** Identitas, peran, status, dan informasi masuk pengguna staf. */
 export interface StaffUser {
   id: string;
   name: string;
@@ -48,6 +54,7 @@ export interface StaffUser {
   initials: string;
 }
 
+/** Rincian catatan audit untuk transaksi atau aktivitas gerbang. */
 export interface AuditLogItem {
   id: string;
   timestamp: string;
@@ -64,6 +71,7 @@ export interface AuditLogItem {
   severity: 'normal' | 'warning' | 'alert';
 }
 
+/** Rincian tiket parkir dari kendaraan masuk hingga proses pembayaran. */
 export interface ParkingTicket {
   ticketNumber: string;
   plateNumber: string;

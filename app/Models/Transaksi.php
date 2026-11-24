@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+/** Merepresentasikan transaksi parkir, perhitungan biaya, dan status kendaraan. */
 class Transaksi extends Model
 {
+    /** Menentukan tabel dan kolom transaksi yang dapat diisi. */
     protected $table = 'transaksis';
 
     protected $fillable = [
@@ -28,30 +30,34 @@ class Transaksi extends Model
     ];
 
     protected $casts = [
-        'jam_masuk'   => 'datetime',
-        'jam_keluar'  => 'datetime',
+        'jam_masuk' => 'datetime',
+        'jam_keluar' => 'datetime',
         'total_bayar' => 'decimal:2',
-        'durasi_jam'  => 'integer',
+        'durasi_jam' => 'integer',
     ];
 
     // ==========================================
     // RELASI
     // ==========================================
+    /** Menghubungkan transaksi dengan kendaraan yang diparkir. */
     public function kendaraan(): BelongsTo
     {
         return $this->belongsTo(Kendaraan::class);
     }
 
+    /** Menghubungkan transaksi dengan area parkir yang digunakan. */
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
     }
 
+    /** Menghubungkan transaksi dengan tarif kendaraan yang berlaku. */
     public function tarif(): BelongsTo
     {
         return $this->belongsTo(Tarif::class);
     }
 
+    /** Menghubungkan transaksi dengan petugas yang mencatatnya. */
     public function petugas(): BelongsTo
     {
         return $this->belongsTo(User::class, 'petugas_id');
@@ -70,6 +76,7 @@ class Transaksi extends Model
         $waktuMasuk = Carbon::parse($this->jam_masuk);
 
         $menit = $waktuMasuk->diffInMinutes($waktuKeluar);
+
         return max(1, (int) ceil($menit / 60)); // Minimal 1 jam, dibulatkan ke atas
     }
 
@@ -78,7 +85,10 @@ class Transaksi extends Model
      */
     public function hitungTotal(): float
     {
-        if (!$this->tarif) return 0.00;
+        if (! $this->tarif) {
+            return 0.00;
+        }
+
         return $this->hitungDurasi() * $this->tarif->tarif_per_jam;
     }
 
@@ -91,11 +101,11 @@ class Transaksi extends Model
         $total = $this->hitungTotal();
 
         $this->update([
-            'jam_keluar'   => now(),
-            'durasi_jam'   => $durasi,
-            'total_bayar'  => $total,
+            'jam_keluar' => now(),
+            'durasi_jam' => $durasi,
+            'total_bayar' => $total,
             'metode_bayar' => $metodeBayar,
-            'status'       => 'keluar',
+            'status' => 'keluar',
         ]);
 
         // Kembalikan kapasitas area (KURANGI jumlah terisi)
@@ -109,32 +119,38 @@ class Transaksi extends Model
     // ==========================================
     // ACCESSORS (Format Tampilan)
     // ==========================================
+    /** Memformat nilai pembayaran sebagai mata uang rupiah. */
     public function getTotalFormatAttribute(): string
     {
-        return 'Rp ' . number_format($this->total_bayar ?? 0, 0, ',', '.');
+        return 'Rp '.number_format($this->total_bayar ?? 0, 0, ',', '.');
     }
 
+    /** Menyediakan lencana tampilan berdasarkan status transaksi. */
     public function getStatusBadgeAttribute(): string
     {
         if ($this->status === 'masuk') {
             return '<span class="badge bg-success">Sedang Parkir</span>';
         }
+
         return '<span class="badge bg-secondary">Selesai</span>';
     }
 
     // ==========================================
     // QUERY SCOPES
     // ==========================================
+    /** Membatasi kueri pada transaksi kendaraan yang masih parkir. */
     public function scopeAktif(Builder $query): Builder
     {
         return $query->where('status', 'masuk');
     }
 
+    /** Membatasi kueri pada transaksi yang sudah selesai. */
     public function scopeSelesai(Builder $query): Builder
     {
         return $query->where('status', 'keluar');
     }
 
+    /** Membatasi kueri pada transaksi yang dibuat hari ini. */
     public function scopeHariIni(Builder $query): Builder
     {
         return $query->whereDate('created_at', today());
@@ -143,6 +159,7 @@ class Transaksi extends Model
     // ==========================================
     // STATIC HELPER
     // ==========================================
+    /** Membuat kode transaksi unik dengan awalan, tanggal, urutan, dan karakter acak. */
     public static function generateKode(): string
     {
         $prefix = 'SP';
@@ -150,6 +167,6 @@ class Transaksi extends Model
         $last = static::whereDate('created_at', today())->count() + 1;
         $random = strtoupper(Str::random(4));
 
-        return $prefix . $date . str_pad($last, 4, '0', STR_PAD_LEFT) . $random;
+        return $prefix.$date.str_pad($last, 4, '0', STR_PAD_LEFT).$random;
     }
 }

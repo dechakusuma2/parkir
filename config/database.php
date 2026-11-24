@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
+// Mengonfigurasi koneksi basis data, tabel migrasi, serta koneksi Redis.
 return [
 
     /*

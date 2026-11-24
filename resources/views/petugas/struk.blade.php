@@ -1,106 +1,53 @@
-@extends('layouts.app')
-@section('title', 'Struk Parkir')
-
+{{-- Menampilkan tiket masuk atau bukti pembayaran yang siap dicetak. --}}
+@extends('layouts.petugas')
+@section('title', $t->status === 'masuk' ? 'Tiket Parkir' : 'Struk Parkir')
+@section('page-title', $t->status === 'masuk' ? 'Tiket Parkir' : 'Struk Parkir')
 @section('content')
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card card-custom p-4" style="border-top:4px solid var(--primary);">
-                <div class="text-center mb-3">
-                    <div class="mx-auto mb-2 d-flex align-items-center justify-content-center rounded-circle"
-                         style="width:60px;height:60px;background:var(--primary);">
-                        <i class="bi bi-p-circle-fill text-white fs-2"></i>
-                    </div>
-                    <h4 class="fw-bold mb-1" style="color:var(--primary);">PARKING POINT</h4>
-                    <small class="text-muted">Sistem Parkir Cerdas</small>
-                </div>
-
-                <hr>
-
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Kode Transaksi</span>
-                        <strong>{{ $t->kode_transaksi }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Status</span>
-                        {!! $t->statusBadge !!}
-                    </div>
-                </div>
-
-                <hr>
-
-                <h6 class="fw-bold mb-3">Data Kendaraan</h6>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Plat Nomor</span>
-                    <strong class="fs-5" style="color:var(--primary);">{{ strtoupper($t->kendaraan->plat_nomor) }}</strong>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Jenis</span>
-                    <span>{{ $t->kendaraan->jenisLabel }}</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Warna</span>
-                    <span>{{ $t->kendaraan->warna }}</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Pemilik</span>
-                    <span>{{ $t->kendaraan->pemilik }}</span>
-                </div>
-
-                <hr>
-
-                <h6 class="fw-bold mb-3">Detail Parkir</h6>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Area</span>
-                    <span>{{ $t->area->nama_area }}</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Jam Masuk</span>
-                    <span>{{ \Carbon\Carbon::parse($t->jam_masuk)->format('d/m/Y H:i') }}</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Jam Keluar</span>
-                    <span>{{ $t->jam_keluar ? \Carbon\Carbon::parse($t->jam_keluar)->format('d/m/Y H:i') : '-' }}</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Durasi</span>
-                    <span>{{ $t->durasi_jam ?? $t->hitungDurasi() }} jam</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Tarif</span>
-                    <span>{{ $t->tarif->tarifFormat ?? '-' }}/jam</span>
-                </div>
-
-                <hr>
-
-                <div class="p-3 rounded" style="background:rgba(10,37,64,0.05);">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold fs-5">TOTAL BAYAR</span>
-                        <span class="fw-bold fs-3" style="color:var(--primary);">
-                            Rp {{ number_format($t->total_bayar ?? 0, 0, ',', '.') }}
-                        </span>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="text-center small text-muted">
-                    <p class="mb-1">Terima kasih telah menggunakan PARKING POINT</p>
-                    <p class="mb-0">Petugas: {{ $t->petugas->name ?? '-' }}</p>
-                    <p class="mb-0">{{ now()->format('d/m/Y H:i') }}</p>
-                </div>
-
-                <div class="d-grid gap-2 mt-3 no-print">
-                    <button onclick="window.print()" class="btn btn-primary-custom btn-lg">
-                        <i class="bi bi-printer"></i> Cetak Struk
-                    </button>
-                    <a href="/petugas/dashboard" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Kembali
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="no-print mx-auto mb-5 flex max-w-md justify-end gap-2">
+    {{-- Tombol navigasi dan cetak disembunyikan saat dokumen dicetak. --}}
+    <a href="{{ route('petugas.dashboard') }}" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600">Kembali</a>
+    <button onclick="window.print()" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
+        <i data-lucide="printer" class="h-4 w-4"></i>Cetak
+    </button>
 </div>
+<article class="print-area mx-auto max-w-md rounded-xl border border-slate-200 bg-white p-7 text-sm shadow-sm print:max-w-[80mm] print:border-0 print:p-0 print:text-xs print:shadow-none">
+    {{-- Rincian tiket berubah sesuai status transaksi masuk atau keluar. --}}
+    <div class="text-center">
+        <div class="mx-auto mb-2 grid h-10 w-10 place-items-center rounded-xl bg-blue-600 text-white print:hidden">
+            <i data-lucide="parking-square"></i>
+        </div>
+        <h2 class="text-xl font-bold tracking-wide text-blue-700">PARKING POINT</h2>
+        <p class="text-xs text-slate-500">{{ $t->status === 'masuk' ? 'Tiket masuk parkir' : 'Bukti pembayaran parkir' }}</p>
+    </div>
+    <div class="my-5 border-t border-dashed border-slate-300"></div>
+    <dl class="space-y-2">
+        <div class="flex justify-between"><dt class="text-slate-500">No. Tiket</dt><dd class="font-semibold">{{ $t->kode_transaksi }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Plat nomor</dt><dd class="font-semibold">{{ $t->kendaraan->plat_nomor }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Jenis</dt><dd class="capitalize">{{ $t->kendaraan->jenis }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Warna</dt><dd class="capitalize">{{ $t->kendaraan->warna }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Jam masuk</dt><dd>{{ $t->jam_masuk->format('d/m/Y H:i') }}</dd></div>
+        @if($t->status === 'keluar')
+            <div class="flex justify-between"><dt class="text-slate-500">Jam keluar</dt><dd>{{ $t->jam_keluar?->format('d/m/Y H:i') ?? '-' }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-500">Durasi</dt><dd>{{ $t->durasi_jam ?? $t->hitungDurasi() }} jam</dd></div>
+        @else
+            <div class="flex justify-between"><dt class="text-slate-500">Area parkir</dt><dd>{{ $t->area->nama_area }}</dd></div>
+        @endif
+    </dl>
+    <div class="my-5 border-t border-dashed border-slate-300"></div>
+    @if($t->status === 'keluar')
+        <div class="flex items-center justify-between">
+            <span class="font-semibold">Total bayar</span>
+            <strong class="text-xl text-blue-700 print:text-base">{{ $t->total_format }}</strong>
+        </div>
+    @else
+        <p class="text-center font-semibold text-amber-700">Simpan tiket ini dan tunjukkan saat kendaraan keluar.</p>
+        <p class="mt-2 text-center text-xs text-slate-500">Biaya parkir dibayar saat kendaraan keluar.</p>
+    @endif
+    <p class="mt-6 text-center text-xs text-slate-400">
+        Petugas: {{ $t->petugas->name }}<br>
+        Dicetak {{ now()->format('d/m/Y H:i:s') }}<br>
+        Terima kasih telah menggunakan layanan kami.
+    </p>
+</article>
+<script>lucide.createIcons();</script>
 @endsection

@@ -1,53 +1,12 @@
-@extends('layouts.app')
+{{-- Menampilkan riwayat transaksi yang dibuat oleh petugas yang sedang masuk. --}}
+@extends('layouts.petugas')
 @section('title', 'Transaksi')
 @section('page-title', 'Riwayat Transaksi')
-@section('sidebar') @show
-
 @section('content')
-<div class="card card-custom p-4">
-    <h5 class="fw-bold mb-4" style="color:var(--primary);">
-        <i class="bi bi-receipt"></i> Riwayat Transaksi Saya
-    </h5>
-
-    <div class="table-responsive">
-        <table class="table table-custom table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Kode</th>
-                    <th>Plat</th>
-                    <th>Jenis</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>Durasi</th>
-                    <th>Status</th>
-                    <th class="text-end">Total</th>
-                    <th class="text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($transaksis as $i => $t)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td><code class="small">{{ $t->kode_transaksi }}</code></td>
-                    <td><strong>{{ strtoupper($t->kendaraan->plat_nomor ?? '-') }}</strong></td>
-                    <td>{{ $t->kendaraan->jenisLabel ?? '-' }}</td>
-                    <td><small>{{ \Carbon\Carbon::parse($t->jam_masuk)->format('d/m H:i') }}</small></td>
-                    <td><small>{{ $t->jam_keluar ? \Carbon\Carbon::parse($t->jam_keluar)->format('d/m H:i') : '-' }}</small></td>
-                    <td>{{ $t->durasi_jam ?? 0 }} jam</td>
-                    <td>{!! $t->statusBadge !!}</td>
-                    <td class="text-end fw-bold text-success">Rp {{ number_format($t->total_bayar, 0, ',', '.') }}</td>
-                    <td class="text-center">
-                        <a href="/petugas/struk/{{ $t->id }}" target="_blank" class="btn btn-sm btn-primary-custom">
-                            <i class="bi bi-printer"></i> Struk
-                        </a>
-                    </td>
-                </tr>
-                @empty
-                <tr><td colspan="10" class="text-center py-4 text-muted">Belum ada transaksi</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+<div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-col justify-between gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center"><div><h2 class="text-lg font-semibold">Riwayat Transaksi Saya</h2><p class="text-sm text-slate-500">Daftar transaksi yang diproses oleh akun ini.</p></div><a href="{{ route('petugas.dashboard') }}" class="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white">Transaksi baru</a></div>
+    {{-- Tabel riwayat menyertakan rincian tiket serta tautan cetak ulang struk. --}}
+    <div class="overflow-x-auto"><table class="w-full min-w-[800px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3">#</th><th class="px-3 py-3">Kode</th><th class="px-3 py-3">Plat</th><th class="px-3 py-3">Jenis</th><th class="px-3 py-3">Masuk</th><th class="px-3 py-3">Keluar</th><th class="px-3 py-3">Durasi</th><th class="px-3 py-3">Status</th><th class="px-3 py-3">Total</th><th class="px-5 py-3">Aksi</th></tr></thead><tbody class="divide-y divide-slate-100">@forelse($transaksis as $i => $t)<tr class="hover:bg-slate-50"><td class="px-5 py-4">{{ $i + 1 }}</td><td class="px-3 py-4 font-medium text-blue-700">{{ $t->kode_transaksi }}</td><td class="px-3 py-4 font-semibold">{{ strtoupper($t->kendaraan->plat_nomor ?? '-') }}</td><td class="px-3 py-4 capitalize">{{ $t->kendaraan->jenis ?? '-' }}</td><td class="px-3 py-4">{{ $t->jam_masuk->format('d/m H:i') }}</td><td class="px-3 py-4">{{ $t->jam_keluar?->format('d/m H:i') ?? '-' }}</td><td class="px-3 py-4">{{ $t->durasi_jam ?? 0 }} jam</td><td class="px-3 py-4"><span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $t->status === 'keluar' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">{{ $t->status === 'keluar' ? 'Selesai' : 'Sedang Parkir' }}</span></td><td class="px-3 py-4 font-semibold">{{ $t->total_format }}</td><td class="px-5 py-4">@if($t->status === 'keluar')<a href="{{ route('petugas.struk',$t->id) }}" class="text-slate-500 hover:text-blue-600" title="Cetak ulang"><i data-lucide="printer" class="h-4 w-4"></i></a>@endif</td></tr>@empty<tr><td colspan="10" class="px-5 py-12 text-center text-slate-400">Belum ada transaksi.</td></tr>@endforelse</tbody></table></div>
 </div>
+<script>lucide.createIcons();</script>
 @endsection

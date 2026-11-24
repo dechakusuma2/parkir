@@ -1,3 +1,4 @@
+{{-- Menampilkan pesan berhasil, gagal, atau kesalahan validasi dari sesi permintaan. --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle-fill"></i> {{ session('success') }}

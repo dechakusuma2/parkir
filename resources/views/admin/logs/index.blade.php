@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan riwayat aktivitas pengguna beserta waktu, deskripsi, dan alamat IP. --}}
+@extends('layouts.admin')
 @section('title', 'Log Aktivitas')
 @section('page-title', 'Log Aktivitas')
-@section('sidebar') @show
-
 @section('content')
 <div class="card card-custom p-4">
     <h5 class="fw-bold mb-4" style="color:var(--primary);">
@@ -10,6 +9,7 @@
     </h5>
 
     <div class="table-responsive">
+        {{-- Daftar log disajikan dalam tabel dengan keadaan kosong bila belum ada data. --}}
         <table class="table table-custom table-hover">
             <thead>
                 <tr>

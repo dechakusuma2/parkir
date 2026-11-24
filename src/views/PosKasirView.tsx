@@ -26,13 +26,14 @@ interface PosKasirViewProps {
   onLogout: () => void;
 }
 
+/** Mengelola antarmuka kasir untuk simulasi kendaraan masuk dan pembayaran keluar. */
 export const PosKasirView: React.FC<PosKasirViewProps> = ({
   onShowToast,
   onLogout,
 }) => {
   const [activeTab, setActiveTab] = useState<'checkin' | 'checkout'>('checkin');
 
-  // Check-in state
+  // Menyimpan kategori kendaraan, nomor polisi, tiket, serta status palang masuk.
   const [selectedCategory, setSelectedCategory] = useState<'motor' | 'mobil' | 'truk'>('motor');
   const [plateInput, setPlateInput] = useState('B 4821 KLO');
   const [ticketNumber, setTicketNumber] = useState('SP-202505-0891');
@@ -40,7 +41,7 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
   const [isBarrierOpen, setIsBarrierOpen] = useState(false);
   const [isPrinting, setIsPrinting] = useState(false);
 
-  // Check-out state
+  // Menyimpan tiket keluar, rincian tagihan, metode bayar, dan status pembayaran.
   const [searchTicket, setSearchTicket] = useState('SP-202505-0842');
   const [checkoutData, setCheckoutData] = useState({
     ticket: 'SP-202505-0842',
@@ -56,10 +57,11 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
   const [showQrisModal, setShowQrisModal] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
-  // Metrics
+  // Menyimpan metrik jumlah kendaraan dan pendapatan kasir pada simulasi.
   const [vehicleCount, setVehicleCount] = useState(142);
   const [cashierRevenue, setCashierRevenue] = useState(680);
 
+  // Mendefinisikan label, ikon, dan tarif awal untuk tiap kategori kendaraan.
   const categories = [
     {
       id: 'motor' as const,
@@ -84,10 +86,12 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
     },
   ];
 
+  // Mengisi awalan plat nomor melalui tombol pilihan cepat.
   const handlePlatePrefix = (prefix: string) => {
     setPlateInput(prefix);
   };
 
+  // Membuat tiket simulasi, mencatat waktu masuk, dan membuka palang sementara.
   const handleSimulateCheckin = () => {
     const rawPlate = plateInput.trim() || 'B 1234 ABC';
     const cleanPlate = rawPlate.toUpperCase();
@@ -113,10 +117,12 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
     }, 600);
   };
 
+  // Memberi umpan balik setelah tiket keluar berhasil ditemukan.
   const handleCalculateCheckout = () => {
     onShowToast(`Tiket ${searchTicket} berhasil divalidasi`, 'info');
   };
 
+  // Membuka modal QRIS atau melanjutkan pembayaran dengan metode lain.
   const handleProcessCheckout = () => {
     if (paymentMethod === 'qris') {
       setShowQrisModal(true);
@@ -125,6 +131,7 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
     completeCheckoutPayment();
   };
 
+  // Menyelesaikan pembayaran, memperbarui metrik, dan membuka palang keluar.
   const completeCheckoutPayment = () => {
     setCheckoutSuccess(true);
     setCashierRevenue((prev) => prev + checkoutData.totalFee / 1000);
@@ -141,6 +148,7 @@ export const PosKasirView: React.FC<PosKasirViewProps> = ({
     }, 4500);
   };
 
+  // Memberi umpan balik saat struk pembayaran disimulasikan untuk dicetak.
   const handlePrintReceiptOnly = () => {
     onShowToast('Struk tanda bukti parkir berhasil dicetak ke printer POS Bluetooth', 'info');
   };

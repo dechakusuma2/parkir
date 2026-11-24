@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan daftar akun pengguna beserta peran dan aksi pengelolaan. --}}
+@extends('layouts.admin')
 @section('title', 'User Management')
 @section('page-title', 'User Management')
-
-@section('sidebar') @show
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,6 +14,7 @@
 </div>
 
 <div class="card card-custom p-4">
+    {{-- Tabel menampilkan identitas akun dan tindakan untuk mengedit atau menghapusnya. --}}
     <div class="table-responsive">
         <table class="table table-custom table-hover">
             <thead>

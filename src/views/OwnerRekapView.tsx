@@ -26,6 +26,7 @@ interface OwnerRekapViewProps {
   onLogout: () => void;
 }
 
+/** Menampilkan laporan eksekutif dengan filter periode, ringkasan, dan ekspor demo. */
 export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
   onShowToast,
   onLogout,
@@ -39,6 +40,7 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [activeHourlyBar, setActiveHourlyBar] = useState<string | null>(null);
 
+  // Menyediakan pilihan periode ringkasan yang dapat dipilih pengguna.
   const periods = [
     { id: 'today' as const, label: 'Hari Ini' },
     { id: 'yesterday' as const, label: 'Kemarin' },
@@ -47,6 +49,7 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
     { id: 'custom' as const, label: 'Kustom' },
   ];
 
+  // Menyimpan nilai aktivitas per jam untuk visualisasi tingkat okupansi.
   const hourlyData = [
     { time: '06:00', height: 28, value: '28%' },
     { time: '08:00', height: 62, value: '62%' },
@@ -58,6 +61,7 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
     { time: '21:00', height: 35, value: '35%' },
   ];
 
+  // Memperbarui rentang tanggal sesuai preset periode yang dipilih.
   const handlePeriodChange = (id: typeof selectedPeriod) => {
     setSelectedPeriod(id);
     if (id === 'today') {
@@ -79,10 +83,12 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
     onShowToast(`Filter periode diubah ke: ${id}`, 'info');
   };
 
+  // Mengonfirmasi penggunaan rentang tanggal yang sedang dipilih.
   const handleApplyFilter = () => {
     onShowToast(`Rentang ${startDate} - ${endDate} berhasil diterapkan!`, 'success');
   };
 
+  // Menutup menu dan memberi umpan balik saat ekspor laporan disimulasikan.
   const handleExport = (format: 'pdf' | 'excel') => {
     setIsExportMenuOpen(false);
     onShowToast(
@@ -91,6 +97,7 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
     );
   };
 
+  // Mensimulasikan pengiriman ringkasan laporan melalui WhatsApp.
   const handleSendWhatsApp = () => {
     onShowToast(
       'Ringkasan pendapatan & okupansi dikirimkan ke WhatsApp Bapak Surya Pratama (+62 811-9281-xxxx)',
@@ -98,6 +105,7 @@ export const OwnerRekapView: React.FC<OwnerRekapViewProps> = ({
     );
   };
 
+  // Mensimulasikan pengiriman berkas laporan melalui email.
   const handleSendEmail = () => {
     onShowToast(
       'File PDF & XLSX laporan dikirim ke surya.pratama@thamrintower.id',

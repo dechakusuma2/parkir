@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /** Menjadikan kolom kode area lama opsional bila kolom tersebut tersedia. */
     public function up(): void
     {
         if (Schema::hasTable('areas') && Schema::hasColumn('areas', 'kode_area')) {
@@ -13,6 +14,7 @@ return new class extends Migration
         }
     }
 
+    /** Mempertahankan kolom lama tetap opsional agar basis data lawas kompatibel. */
     public function down(): void
     {
         // Keep the legacy column nullable for compatibility with existing databases.

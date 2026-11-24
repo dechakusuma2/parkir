@@ -30,6 +30,7 @@ interface OverviewViewProps {
   onShowToast: (message: string, type?: 'success' | 'info' | 'error') => void;
 }
 
+/** Menampilkan halaman ringkasan dengan formulir simulasi login berbasis peran. */
 export const OverviewView: React.FC<OverviewViewProps> = ({
   onLoginRole,
   onShowToast,
@@ -41,6 +42,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Menentukan label, kredensial demo, dan tujuan navigasi untuk tiap peran.
   const roleMeta = {
     petugas: {
       title: 'Masuk Sistem Petugas',
@@ -71,6 +73,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
     },
   };
 
+  // Mengisi formulir dengan kredensial demo dari peran yang sedang dipilih.
   const handleDemoFill = () => {
     const meta = roleMeta[selectedRole];
     setUserId(meta.defaultUser);
@@ -78,6 +81,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
     onShowToast(`Kredensial demo terisi: ${meta.defaultUser}`, 'info');
   };
 
+  // Memvalidasi simulasi login lalu membuka tampilan peran yang dipilih.
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const effectiveUserId = userId.trim() || roleMeta[selectedRole].defaultUser;

@@ -10,6 +10,7 @@ interface RoleSwitcherModalProps {
   onSelectRole: (role: UserRole, targetTab?: NavTab) => void;
 }
 
+/** Menawarkan pilihan peran demo dan mengarahkan pengguna ke tab yang sesuai. */
 export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({
   isOpen,
   onClose,
@@ -18,6 +19,7 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  // Menyediakan informasi visual dan tab tujuan untuk setiap peran aplikasi.
   const roles = [
     {
       id: 'petugas' as UserRole,

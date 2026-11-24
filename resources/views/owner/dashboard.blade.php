@@ -1,94 +1,66 @@
-@extends('layouts.app')
+{{-- Menampilkan metrik pendapatan, jumlah transaksi, kendaraan aktif, dan status area. --}}
+@extends('layouts.owner')
 @section('title', 'Dashboard Owner')
 @section('page-title', 'Dashboard Owner')
 
-@section('sidebar') @show
-
 @section('content')
-<!-- Stats -->
-<div class="row g-4 mb-4">
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
-            <p class="stat-label">Total Pendapatan</p>
-            <h3 class="stat-value">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);">
-            <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
-            <p class="stat-label">Pendapatan Hari Ini</p>
-            <h3 class="stat-value">Rp {{ number_format($hariIni ?? 0, 0, ',', '.') }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#43a047,#66bb6a);">
-            <div class="stat-icon"><i class="bi bi-receipt"></i></div>
-            <p class="stat-label">Transaksi Hari Ini</p>
-            <h3 class="stat-value">{{ $transaksiHariIni ?? 0 }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#fb8c00,#ffa726);">
-            <div class="stat-icon"><i class="bi bi-car-front"></i></div>
-            <p class="stat-label">Kendaraan Aktif</p>
-            <h3 class="stat-value">{{ $kendaraanAktif ?? 0 }}</h3>
-        </div>
-    </div>
+<div class="admin-page-heading">
+    <div><p class="admin-eyebrow">Selamat datang kembali</p><h2 class="admin-heading">Ringkasan operasional</h2></div>
+    <span class="admin-date"><i data-lucide="calendar-days"></i>{{ now()->translatedFormat('l, d F Y') }}</span>
 </div>
 
-<!-- Chart & Info -->
-<div class="row g-4">
-    <div class="col-md-8">
-        <div class="card card-custom p-4">
-            <h5 class="fw-bold mb-4" style="color:var(--primary);">
-                <i class="bi bi-graph-up"></i> Pendapatan 7 Hari Terakhir
-            </h5>
-            <canvas id="chartPendapatan" height="100"></canvas>
-        </div>
-    </div>
+<div class="admin-stat-grid">
+    {{-- Kartu ringkasan memperlihatkan indikator keuangan dan aktivitas harian. --}}
+    <article class="admin-stat-card" style="background:#fff; border:1px solid #e2e8f0; color:#0f172a; box-shadow:0 8px 24px rgba(15,23,42,.04);">
+        <div class="admin-stat-icon" style="background:#dbeafe; color:#1d4ed8;"><i data-lucide="banknote"></i></div>
+        <p style="color:#64748b;">Total Pendapatan</p>
+        <strong style="color:#0f172a;">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</strong>
+    </article>
+    <article class="admin-stat-card" style="background:#fff; border:1px solid #e2e8f0; color:#0f172a; box-shadow:0 8px 24px rgba(15,23,42,.04);">
+        <div class="admin-stat-icon" style="background:#dbeafe; color:#2563eb;"><i data-lucide="calendar-check-2"></i></div>
+        <p style="color:#64748b;">Pendapatan Hari Ini</p>
+        <strong style="color:#0f172a;">Rp {{ number_format($pendapatanHariIni ?? 0, 0, ',', '.') }}</strong>
+    </article>
+    <article class="admin-stat-card" style="background:#fff; border:1px solid #e2e8f0; color:#0f172a; box-shadow:0 8px 24px rgba(15,23,42,.04);">
+        <div class="admin-stat-icon" style="background:#dcfce7; color:#15803d;"><i data-lucide="receipt-text"></i></div>
+        <p style="color:#64748b;">Transaksi Hari Ini</p>
+        <strong style="color:#0f172a;">{{ number_format($transaksiHariIni ?? 0) }}</strong>
+    </article>
+    <article class="admin-stat-card" style="background:#fff; border:1px solid #e2e8f0; color:#0f172a; box-shadow:0 8px 24px rgba(15,23,42,.04);">
+        <div class="admin-stat-icon" style="background:#fef3c7; color:#b45309;"><i data-lucide="car-front"></i></div>
+        <p style="color:#64748b;">Kendaraan Aktif</p>
+        <strong style="color:#0f172a;">{{ number_format($kendaraanAktif ?? 0) }}</strong>
+    </article>
+</div>
 
-    <div class="col-md-4">
-        <div class="card card-custom p-4">
-            <h5 class="fw-bold mb-4" style="color:var(--primary);">
-                <i class="bi bi-geo-alt"></i> Status Area
-            </h5>
-            @foreach($areas ?? [] as $area)
-                <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-                    <div>
-                        <div class="fw-semibold">{{ $area->nama_area }}</div>
-                        <small class="text-muted">{{ $area->terisi }}/{{ $area->kapasitas }} kendaraan</small>
+<div class="admin-dashboard-grid">
+    {{-- Grafik dan daftar area menampilkan tren pendapatan serta kapasitas parkir. --}}
+    <section class="admin-card admin-chart-card">
+        <div class="admin-card-header">
+            <div><p class="admin-eyebrow">Tren 7 hari</p><h3>Pendapatan 7 Hari Terakhir</h3></div>
+        </div>
+        <div class="admin-chart" data-chart data-masuk='@json(array_fill(0, 7, 0))' data-keluar='@json($chartData ?? [])' data-labels='@json($labels ?? [])'></div>
+    </section>
+
+    <section class="admin-card">
+        <div class="admin-card-header">
+            <div><p class="admin-eyebrow">Kapasitas</p><h3>Status Area</h3></div>
+        </div>
+        <div class="admin-area-list">
+            @forelse($areas ?? [] as $area)
+                <div class="admin-area-row">
+                    <div class="admin-area-row-top">
+                        <span>{{ $area->nama_area }}</span>
+                        <strong>{{ $area->terisi }}/{{ $area->kapasitas }}</strong>
                     </div>
-                    {!! $area->statusBadge !!}
+                    <div class="admin-progress"><span style="width:{{ $area->percentage }}%"></span></div>
+                    <small>{{ $area->sisa }} slot tersedia</small>
+                    <div class="mt-2">{!! $area->statusBadge !!}</div>
                 </div>
-            @endforeach
+            @empty
+                <p class="admin-empty">Belum ada area parkir.</p>
+            @endforelse
         </div>
-    </div>
+    </section>
 </div>
-
-@push('scripts')
-<script>
-const ctx = document.getElementById('chartPendapatan');
-@if(isset($chartData))
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: {!! json_encode($chartData['labels']) !!},
-        datasets: [{
-            label: 'Pendapatan (Rp)',
-            data: {!! json_encode($chartData['data']) !!},
-            borderColor: '#0a2540',
-            backgroundColor: 'rgba(10,37,64,0.1)',
-            tension: 0.4,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: false } }
-    }
-});
-@endif
-</script>
-@endpush
 @endsection

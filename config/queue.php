@@ -1,5 +1,6 @@
 <?php
 
+// Mengatur koneksi antrean, penyimpanan batch, dan pencatatan job yang gagal.
 return [
 
     /*

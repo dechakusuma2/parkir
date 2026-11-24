@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan daftar area, kapasitas terpakai, ketersediaan, dan aksi admin. --}}
+@extends('layouts.admin')
 @section('title', 'Area Parkir')
 @section('page-title', 'Area Parkir')
-@section('sidebar') @show
-
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold mb-0" style="color:var(--primary);">
@@ -14,6 +13,7 @@
 </div>
 
 <div class="card card-custom p-4">
+    {{-- Tabel memperlihatkan kapasitas setiap area dan tindakan edit atau hapus. --}}
     <div class="table-responsive">
         <table class="table table-custom table-hover">
             <thead>

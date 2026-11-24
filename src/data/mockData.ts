@@ -7,6 +7,7 @@ import {
   ParkingTicket,
 } from '../types';
 
+// Menyimpan alamat aset gambar untuk merek, profil, dan kategori kendaraan demo.
 export const ASSETS = {
   logo: 'https://lh3.googleusercontent.com/aida/AEtjO1W4JDPJRgCDDfsP9qZPCydhgXHfpGYRGyvq13-XFIzzfJfD-LD5STZ2ylqRaGneFvFq4F9ypVjj9iXVgvcEhS0HyaId5Adr65dw8F-1dzqunURnOIaCjiR52iBjN_zWlEM-bZKlCt9BSHPIXDNZW7D0lECDakb32sygW3KkEKCgowAgN9Il7tfOprldiCWOYfghATzJUcfOQQ_loQiRg19GoPG0UyVNoJQ7xYEqA9p3ZoN0AC6EbglGBA',
   avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAV0LD3DfMSav-mJDjcxILiDGPvgirJXFXOzBuCbwHXR_9BuVe9s64cmTwiGFL0eJrtX3pVONSyyUKnIheUBakeP7hRtFU6ctJ_NYOWOHMKMCqZPijHR9BcbQjDalNLGW0k0JHkEwaD8aVkFa-0whFZ5U1I1LpuDtqZF6r4eHj-RIOnRExdLr4B-2gxkZvQboyvGJpQm4rWyCvOSmvPsFUP7l2PUB9DFex-zZofeJVIizRvbDRgPFE',
@@ -18,6 +19,7 @@ export const ASSETS = {
   },
 };
 
+// Menyediakan data awal tarif kendaraan yang digunakan oleh tampilan simulasi.
 export const INITIAL_TARIFFS: VehicleTariff[] = [
   {
     id: 'tar-1',
@@ -53,6 +55,7 @@ export const INITIAL_TARIFFS: VehicleTariff[] = [
   },
 ];
 
+// Menyediakan data awal kapasitas dan fitur untuk setiap area parkir.
 export const INITIAL_AREAS: ParkingArea[] = [
   {
     id: 'area-1',
@@ -93,6 +96,7 @@ export const INITIAL_AREAS: ParkingArea[] = [
   },
 ];
 
+// Menyediakan label dan gambar kategori kendaraan untuk master data demo.
 export const INITIAL_CATEGORIES: VehicleCategory[] = [
   {
     id: 'cat-1',
@@ -117,6 +121,7 @@ export const INITIAL_CATEGORIES: VehicleCategory[] = [
   },
 ];
 
+// Menyediakan akun staf contoh beserta peran dan status aksesnya.
 export const INITIAL_USERS: StaffUser[] = [
   {
     id: 'usr-1',
@@ -160,6 +165,7 @@ export const INITIAL_USERS: StaffUser[] = [
   },
 ];
 
+// Menyediakan riwayat audit contoh untuk panel pemantauan aktivitas.
 export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-1',
@@ -231,6 +237,7 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   },
 ];
 
+// Menyediakan tiket contoh untuk status parkir aktif dan yang telah dibayar.
 export const INITIAL_TICKETS: ParkingTicket[] = [
   {
     ticketNumber: 'SP-202505-0891',

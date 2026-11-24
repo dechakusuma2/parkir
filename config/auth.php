@@ -2,6 +2,7 @@
 
 use App\Models\User;
 
+// Mengatur guard, provider pengguna, serta pengaturan reset dan konfirmasi kata sandi.
 return [
 
     /*

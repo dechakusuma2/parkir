@@ -1,5 +1,6 @@
 <?php
 
+// Mengatur disk penyimpanan berkas dan tautan simbolis yang disediakan aplikasi.
 return [
 
     /*

@@ -1,3 +1,4 @@
+{{-- Komponen bersama untuk mengisi jenis kendaraan, tarif per jam, dan keterangan. --}}
 <div class="mb-3">
     <label class="form-label fw-semibold">Jenis Kendaraan <span class="text-danger">*</span></label>
     <select name="jenis_kendaraan" class="form-select" required>

@@ -1,144 +1,59 @@
+{{-- Menampilkan halaman publik pengenalan Parking Point dan tautan masuk. --}}
 @extends('layouts.app')
-@section('title', 'Home')
+@section('title', 'Manajemen Parkir Modern')
 
 @section('content')
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg py-3" style="background:var(--primary);">
-    <div class="container">
-        <a class="navbar-brand text-white fw-bold d-flex align-items-center gap-2" href="/">
-            <i class="bi bi-p-circle-fill fs-3"></i> PARKING POINT
+<div class="parking-landing">
+    <nav class="landing-nav">
+        <a class="brand-mark" href="{{ url('/') }}" aria-label="Parking Point">
+            <span class="brand-icon"><i class="bi bi-p-circle-fill"></i></span>
+            <span>PARKING <strong>POINT</strong></span>
         </a>
-        <div class="ms-auto">
-            <a href="/login" class="btn btn-outline-light px-4">
-                <i class="bi bi-box-arrow-in-right"></i> Login
-            </a>
-        </div>
-    </div>
-</nav>
+        <a href="{{ route('login') }}" class="landing-login">Masuk <i class="bi bi-arrow-up-right"></i></a>
+    </nav>
 
-<!-- Hero -->
-<section class="hero text-center">
-    <div class="container position-relative" style="z-index:2;">
-        <span class="badge bg-light text-dark mb-3 px-3 py-2">
-            <i class="bi bi-stars"></i> Sistem Parkir Modern
-        </span>
-        <h1 class="display-2 fw-bold mb-4">PARKING POINT</h1>
-        <p class="lead mb-4 mx-auto" style="max-width:600px;">
-            Solusi manajemen parkir cerdas, cepat, dan terpercaya.
-            Kelola area parkir Anda dengan teknologi terdepan.
-        </p>
-        <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="/login" class="btn btn-light btn-lg px-5">
-                <i class="bi bi-rocket-takeoff"></i> Mulai Sekarang
-            </a>
-            <a href="#fitur" class="btn btn-outline-light btn-lg px-5">
-                <i class="bi bi-info-circle"></i> Pelajari Lebih
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Fitur -->
-<section id="fitur" class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold" style="color:var(--primary);">Fitur Unggulan</h2>
-            <p class="text-muted">Semua yang Anda butuhkan untuk manajemen parkir modern</p>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-lightning-charge-fill fs-1" style="color:var(--primary);"></i>
-                    </div>
-                    <h4 class="fw-bold">Super Cepat</h4>
-                    <p class="text-muted">Transaksi parkir dalam hitungan detik dengan sistem otomatis</p>
+    <main>
+        {{-- Bagian hero memperkenalkan manfaat utama dan pratinjau dashboard. --}}
+        <section class="landing-hero">
+            <div class="hero-copy">
+                <p class="eyebrow"><span></span> Sistem parkir yang lebih tertata</p>
+                <h1>Parkir lancar,<br><em>bisnis</em> berkembang.</h1>
+                <p class="hero-description">Kelola kendaraan, transaksi, area, dan laporan parkir dalam satu ruang kerja yang sederhana.</p>
+                <div class="hero-actions">
+                    <a href="{{ route('login') }}" class="landing-button landing-button-primary">Mulai kelola <i class="bi bi-arrow-right"></i></a>
+                    <a href="#fitur" class="landing-button landing-button-ghost">Lihat fitur</a>
                 </div>
+                <div class="hero-note"><i class="bi bi-shield-check"></i> Data tercatat rapi dan mudah dipantau</div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-shield-lock-fill fs-1" style="color:var(--primary);"></i>
+            <div class="hero-preview" aria-label="Ringkasan dashboard parkir">
+                <div class="preview-glow"></div>
+                <div class="preview-window">
+                    <div class="preview-topbar"><span class="preview-dots"><i></i><i></i><i></i></span><span>Ringkasan hari ini</span><i class="bi bi-three-dots"></i></div>
+                    <div class="preview-heading"><div><small>Selamat datang kembali</small><h2>Dashboard parkir</h2></div><span class="live-dot">Live</span></div>
+                    <div class="preview-stats">
+                        <div><small>Kendaraan masuk</small><strong>128</strong><span class="trend-up">+12,4%</span></div>
+                        <div><small>Pendapatan hari ini</small><strong>Rp 4,8 jt</strong><span class="trend-up">+8,2%</span></div>
                     </div>
-                    <h4 class="fw-bold">Aman & Terpercaya</h4>
-                    <p class="text-muted">Data tersimpan aman dengan enkripsi dan backup otomatis</p>
+                    <div class="preview-chart"><div class="chart-label"><span>Aktivitas parkir</span><small>07.00 - 19.00</small></div><div class="chart-bars"><i style="height:32%"></i><i style="height:48%"></i><i style="height:40%"></i><i style="height:70%"></i><i style="height:56%"></i><i style="height:88%"></i><i style="height:66%"></i><i style="height:96%"></i><i style="height:76%"></i></div></div>
                 </div>
+                <div class="floating-ticket"><i class="bi bi-check2-circle"></i><span><small>Transaksi berhasil</small><strong>Mobil • B 1234 ABC</strong></span></div>
             </div>
+        </section>
 
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-graph-up-arrow fs-1" style="color:var(--primary);"></i>
-                    </div>
-                    <h4 class="fw-bold">Real-time Report</h4>
-                    <p class="text-muted">Monitoring dan laporan pendapatan secara real-time</p>
-                </div>
-            </div>
+        {{-- Bagian ini merangkum nilai layanan sebelum daftar fitur. --}}
+        <section class="trust-strip"><span>Dipakai untuk operasional yang lebih tenang</span><div><i class="bi bi-lightning-charge-fill"></i> Cepat <i class="bi bi-bar-chart-fill"></i> Terukur <i class="bi bi-lock-fill"></i> Aman</div></section>
 
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-printer-fill fs-1" style="color:var(--primary);"></i>
-                    </div>
-                    <h4 class="fw-bold">Cetak Struk</h4>
-                    <p class="text-muted">Struk parkir otomatis dengan QR code untuk validasi</p>
-                </div>
+        <section class="feature-section" id="fitur">
+            <div class="section-heading"><p class="eyebrow"><span></span> Semua dalam satu tempat</p><h2>Lebih sedikit pekerjaan manual.<br><em>Lebih banyak kendali.</em></h2></div>
+            <div class="feature-grid">
+                <article class="feature-card feature-card-dark"><i class="bi bi-speedometer2 feature-icon"></i><h3>Transaksi secepat kilat</h3><p>Catat kendaraan masuk dan keluar tanpa antrean panjang.</p><a href="{{ route('login') }}">Pelajari <i class="bi bi-arrow-up-right"></i></a></article>
+                <article class="feature-card"><i class="bi bi-pie-chart feature-icon"></i><h3>Laporan yang berbicara</h3><p>Pantau pendapatan dan aktivitas area dengan data yang jelas.</p><a href="{{ route('login') }}">Pelajari <i class="bi bi-arrow-up-right"></i></a></article>
+                <article class="feature-card feature-card-accent"><i class="bi bi-people feature-icon"></i><h3>Tim lebih terarah</h3><p>Owner, admin, dan petugas bekerja dengan akses yang tepat.</p><a href="{{ route('login') }}">Pelajari <i class="bi bi-arrow-up-right"></i></a></article>
             </div>
+        </section>
+    </main>
 
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-people-fill fs-1" style="color:var(--primary);"></i>
-                    </div>
-                    <h4 class="fw-bold">Multi User</h4>
-                    <p class="text-muted">Sistem role Owner, Admin, dan Petugas yang terstruktur</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card card-custom h-100 p-4 text-center">
-                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:70px;height:70px;background:rgba(10,37,64,0.1);">
-                        <i class="bi bi-phone-fill fs-1" style="color:var(--primary);"></i>
-                    </div>
-                    <h4 class="fw-bold">Responsive</h4>
-                    <p class="text-muted">Akses dari perangkat apapun, kapanpun dan dimanapun</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Stats -->
-<section class="py-5" style="background:var(--primary);color:#fff;">
-    <div class="container">
-        <div class="row text-center g-4">
-            <div class="col-md-3 col-6">
-                <h2 class="fw-bold">10K+</h2>
-                <p class="mb-0 opacity-75">Transaksi / Bulan</p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h2 class="fw-bold">500+</h2>
-                <p class="mb-0 opacity-75">Area Parkir</p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h2 class="fw-bold">99.9%</h2>
-                <p class="mb-0 opacity-75">Uptime</p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h2 class="fw-bold">24/7</h2>
-                <p class="mb-0 opacity-75">Support</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="py-4 text-center" style="background:var(--primary-dark);color:#fff;">
-    <div class="container">
-        <p class="mb-0">&copy; 2026 <strong>PARKING POINT</strong>. All Rights Reserved.</p>
-        <small class="opacity-75">Made with <i class="bi bi-heart-fill text-danger"></i> in Indonesia</small>
-    </div>
-</footer>
+    <footer class="landing-footer"><span>&copy; {{ date('Y') }} Parking Point</span><span>Manajemen parkir tanpa ribet.</span></footer>
+</div>
 @endsection

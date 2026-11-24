@@ -1,3 +1,4 @@
+/* Menyediakan font, token tema, dan aturan dasar untuk antarmuka React. */
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

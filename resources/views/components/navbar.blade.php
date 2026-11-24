@@ -1,3 +1,4 @@
+{{-- Menyediakan judul halaman, tombol menu seluler, tanggal, dan menu akun. --}}
 <div class="top-navbar">
     <div class="d-flex align-items-center gap-3">
         <button class="btn btn-sm btn-outline-secondary d-md-none" onclick="document.querySelector('.sidebar').classList.toggle('show')">

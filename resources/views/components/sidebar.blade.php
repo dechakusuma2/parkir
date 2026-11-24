@@ -1,3 +1,4 @@
+{{-- Menampilkan identitas pengguna dan navigasi yang disesuaikan dengan perannya. --}}
 <div class="sidebar">
     <div class="sidebar-brand">
         <i class="bi bi-p-circle-fill"></i>
@@ -19,6 +20,7 @@
     </div>
 
     <ul class="sidebar-menu">
+        {{-- Menu pemilik hanya muncul saat akun aktif memiliki peran owner. --}}
         @if(auth()->user()->isOwner())
             <li class="menu-label">Owner Menu</li>
             <li><a href="{{ route('owner.dashboard', [], false) ? '/owner/dashboard' : '/owner/dashboard' }}" class="{{ request()->is('owner/dashboard') ? 'active' : '' }}">
@@ -29,6 +31,7 @@
             </a></li>
         @endif
 
+        {{-- Menu administrasi ditampilkan khusus untuk akun admin. --}}
         @if(auth()->user()->isAdmin())
             <li class="menu-label">Admin Menu</li>
             <li><a href="/admin/dashboard" class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">
@@ -51,6 +54,7 @@
             </a></li>
         @endif
 
+        {{-- Menu operasional ditampilkan khusus untuk akun petugas. --}}
         @if(auth()->user()->isPetugas())
             <li class="menu-label">Petugas Menu</li>
             <li><a href="/petugas/dashboard" class="{{ request()->is('petugas/dashboard') ? 'active' : '' }}">

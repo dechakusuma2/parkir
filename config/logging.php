@@ -5,6 +5,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
+// Mendefinisikan kanal log, tujuan pencatatan, dan level log aplikasi.
 return [
 
     /*

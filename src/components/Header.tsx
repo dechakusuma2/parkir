@@ -10,11 +10,13 @@ interface HeaderProps {
   onSwitchRole: (role: UserRole, targetTab?: NavTab) => void;
 }
 
+/** Menampilkan merek, judul tab, dan kontrol untuk mengganti peran pengguna. */
 export const Header: React.FC<HeaderProps> = ({
   currentTab,
   activeRole,
   onOpenRoleModal,
 }) => {
+  // Mengubah tab aktif menjadi subjudul yang dapat dibaca pengguna.
   const getSubTitle = () => {
     switch (currentTab) {
       case 'overview':
@@ -30,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  // Mengubah peran aktif menjadi label badge pada tombol profil.
   const getRoleBadge = () => {
     switch (activeRole) {
       case 'petugas':

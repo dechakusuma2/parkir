@@ -1,128 +1,23 @@
-@extends('layouts.app')
-@section('title', 'Dashboard Petugas')
-@section('page-title', 'Dashboard Petugas')
-@section('sidebar') @show
-
+{{-- Menampilkan ringkasan harian dan alur pencatatan kendaraan masuk atau keluar. --}}
+@extends('layouts.petugas')
+@section('title','Dashboard Petugas')
+@section('page-title','Dashboard Petugas')
 @section('content')
-<div class="row g-4 mb-4">
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-receipt"></i></div>
-            <p class="stat-label">Transaksi Hari Ini</p>
-            <h3 class="stat-value">{{ $transaksiHariIni ?? 0 }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#43a047,#66bb6a);">
-            <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
-            <p class="stat-label">Pendapatan Hari Ini</p>
-            <h3 class="stat-value">Rp {{ number_format($pendapatanHariIni ?? 0, 0, ',', '.') }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);">
-            <div class="stat-icon"><i class="bi bi-car-front"></i></div>
-            <p class="stat-label">Kendaraan Aktif</p>
-            <h3 class="stat-value">{{ $kendaraanAktif ?? 0 }}</h3>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="stat-card" style="background:linear-gradient(135deg,#fb8c00,#ffa726);">
-            <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
-            <p class="stat-label">Total Transaksi Saya</p>
-            <h3 class="stat-value">{{ $totalTransaksiSaya ?? 0 }}</h3>
-        </div>
-    </div>
+<div class="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p class="text-sm text-slate-500">Selamat bertugas, {{ auth()->user()->name }}.</p><h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-950">Operasional parkir hari ini</h2></div><span class="w-fit rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">{{ now()->translatedFormat('l, d F Y') }}</span></div>
+<div class="mb-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+{{-- Statistik ini menunjukkan jumlah transaksi dan pendapatan petugas hari ini. --}}
+@foreach([['Kendaraan Masuk Hari Ini',$transaksiMasukHariIni,'car-front','blue'],['Kendaraan Keluar Hari Ini',$transaksiKeluarHariIni,'log-out','cyan'],['Sedang Parkir',$transaksiAktif->count(),'parking-square','amber'],['Pendapatan Hari Ini','Rp '.number_format($pendapatanHariIni,0,',','.'),'wallet-cards','emerald']] as $stat)
+<div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"><div class="flex items-start justify-between"><p class="text-sm text-slate-500">{{ $stat[0] }}</p><span class="rounded-lg bg-{{ $stat[3] }}-50 p-2 text-{{ $stat[3] }}-600"><i data-lucide="{{ $stat[2] }}" class="h-5 w-5"></i></span></div><p class="mt-4 text-2xl font-bold text-slate-950">{{ $stat[1] }}</p></div>
+@endforeach
 </div>
-
-<!-- Quick Action -->
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card card-custom p-4">
-            <h5 class="fw-bold mb-4" style="color:var(--primary);">
-                <i class="bi bi-plus-circle"></i> Kendaraan Masuk
-            </h5>
-            <form action="{{ route('petugas.masuk') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Plat Nomor <span class="text-danger">*</span></label>
-                    <input type="text" name="plat_nomor" class="form-control form-control-lg text-uppercase"
-                           placeholder="B 1234 ABC" required autofocus>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-semibold">Jenis <span class="text-danger">*</span></label>
-                        <select name="jenis" class="form-select" required>
-                            <option value="motor">Motor</option>
-                            <option value="mobil">Mobil</option>
-                            <option value="truk">Truk</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-semibold">Warna <span class="text-danger">*</span></label>
-                        <input type="text" name="warna" class="form-control" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Nama Pemilik <span class="text-danger">*</span></label>
-                    <input type="text" name="pemilik" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Area Parkir <span class="text-danger">*</span></label>
-                    <select name="area_id" class="form-select" required>
-                        <option value="">-- Pilih Area --</option>
-                        @foreach($areas as $area)
-                            <option value="{{ $area->id }}" {{ $area->isFull() ? 'disabled' : '' }}>
-                                {{ $area->nama_area }} (Sisa: {{ $area->sisa }})
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <button class="btn btn-primary-custom btn-lg w-100">
-                    <i class="bi bi-box-arrow-in-right"></i> Proses Kendaraan Masuk
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card card-custom p-4">
-            <h5 class="fw-bold mb-4" style="color:var(--primary);">
-                <i class="bi bi-car-front"></i> Kendaraan Sedang Parkir
-            </h5>
-            <div class="table-responsive" style="max-height:450px;overflow-y:auto;">
-                <table class="table table-hover">
-                    <thead style="position:sticky;top:0;background:#fff;">
-                        <tr>
-                            <th>Plat</th>
-                            <th>Jenis</th>
-                            <th>Masuk</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($transaksiAktif as $t)
-                        <tr>
-                            <td><code>{{ strtoupper($t->kendaraan->plat_nomor) }}</code></td>
-                            <td>{{ $t->kendaraan->jenisLabel }}</td>
-                            <td><small>{{ \Carbon\Carbon::parse($t->jam_masuk)->format('H:i') }}</small></td>
-                            <td>
-                                <form action="{{ route('petugas.keluar', $t->id) }}" method="POST"
-                                      onsubmit="return confirm('Proses kendaraan keluar?')">
-                                    @csrf
-                                    <button class="btn btn-sm btn-success">
-                                        <i class="bi bi-box-arrow-right"></i> Keluar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr><td colspan="4" class="text-center py-3 text-muted">Tidak ada kendaraan aktif</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+<div class="grid gap-6 xl:grid-cols-[minmax(360px,420px)_1fr]">
+{{-- Panel operasional menukar formulir kendaraan masuk dan pencarian kendaraan keluar. --}}
+<section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"><div class="mb-5 flex rounded-lg bg-slate-100 p-1"><button id="tab-masuk" onclick="switchTab('masuk')" class="tab-button flex-1 rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm">Kendaraan Masuk</button><button id="tab-keluar" onclick="switchTab('keluar')" class="tab-button flex-1 rounded-md px-3 py-2 text-sm font-semibold text-slate-500">Kendaraan Keluar</button></div>
+<div id="panel-masuk"><h3 class="mb-1 text-lg font-semibold">Catat kendaraan masuk</h3><p class="mb-5 text-sm text-slate-500">Tiket dibuat otomatis saat formulir disimpan.</p><form action="{{ route('petugas.masuk') }}" method="POST" class="space-y-4">@csrf<div><label class="mb-1.5 block text-sm font-medium">Plat nomor</label><input name="plat_nomor" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5 uppercase outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="B 1234 ABC"></div><div><label class="mb-1.5 block text-sm font-medium">Jenis kendaraan</label><select name="jenis" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 outline-none focus:border-blue-500"><option value="motor">Motor</option><option value="mobil">Mobil</option><option value="truk">Truk</option></select></div><div><label class="mb-1.5 block text-sm font-medium">Warna kendaraan</label><input name="warna" required maxlength="50" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="Contoh: Hitam"></div><button class="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"><i data-lucide="ticket" class="h-4 w-4"></i>Simpan & Buat Tiket</button></form></div>
+<div id="panel-keluar" class="hidden"><h3 class="mb-1 text-lg font-semibold">Proses kendaraan keluar</h3><p class="mb-5 text-sm text-slate-500">Cari menggunakan plat nomor atau nomor tiket.</p><form action="{{ route('petugas.keluar') }}" method="GET" class="space-y-4"><div><label class="mb-1.5 block text-sm font-medium">Plat nomor / nomor tiket</label><input name="q" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5 uppercase outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="SP202609240001"></div><button class="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"><i data-lucide="search" class="h-4 w-4"></i>Cari kendaraan</button></form>@if($exitPreview)<div class="mt-5 rounded-lg border border-cyan-200 bg-cyan-50 p-4"><div class="flex justify-between"><div><p class="text-xs text-cyan-700">{{ $exitPreview->kode_transaksi }}</p><p class="font-semibold text-slate-900">{{ $exitPreview->kendaraan->plat_nomor }}</p></div><p class="text-right text-sm text-slate-600">{{ $exitPreview->kendaraan->jenisLabel }}</p></div><div class="mt-3 grid grid-cols-2 gap-3 text-sm"><div><p class="text-xs text-slate-500">Durasi</p><p class="font-semibold">{{ $exitPreview->hitungDurasi() }} jam</p></div><div><p class="text-xs text-slate-500">Total tarif</p><p class="font-semibold text-blue-700">Rp {{ number_format($exitPreview->hitungTotal(),0,',','.') }}</p></div></div><form action="{{ route('petugas.keluar.proses') }}" method="POST" class="mt-4">@csrf<input type="hidden" name="transaksi_id" value="{{ $exitPreview->id }}"><button class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700">Proses Pembayaran</button></form></div>@endif</div>
+</section>
+{{-- Tabel ini menampilkan transaksi hari ini dengan pencarian dan filter status. --}}
+<section class="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm"><div class="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between"><div><h3 class="text-lg font-semibold">Transaksi hari ini</h3><p class="text-sm text-slate-500">Pantau kendaraan yang masuk dan selesai.</p></div><form class="flex flex-col gap-2 sm:flex-row"><input name="search" value="{{ request('search') }}" class="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-500" placeholder="Cari plat / tiket"><select name="status" onchange="this.form.submit()" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"><option value="">Semua status</option><option value="masuk" @selected(request('status')==='masuk')>Sedang Parkir</option><option value="keluar" @selected(request('status')==='keluar')>Selesai</option></select></form></div><div class="overflow-x-auto"><table class="w-full min-w-[760px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3">No. Tiket</th><th class="px-3 py-3">Kendaraan</th><th class="px-3 py-3">Jam masuk</th><th class="px-3 py-3">Jam keluar</th><th class="px-3 py-3">Durasi</th><th class="px-3 py-3">Tarif</th><th class="px-5 py-3">Status</th><th></th></tr></thead><tbody class="divide-y divide-slate-100">@forelse($transaksis as $transaksi)<tr class="transition hover:bg-slate-50"><td class="px-5 py-4 font-medium text-blue-700">{{ $transaksi->kode_transaksi }}</td><td class="px-3 py-4"><p class="font-semibold">{{ $transaksi->kendaraan->plat_nomor }}</p><p class="text-xs capitalize text-slate-500">{{ $transaksi->kendaraan->jenis }}</p></td><td class="px-3 py-4">{{ $transaksi->jam_masuk->format('H:i') }}</td><td class="px-3 py-4">{{ $transaksi->jam_keluar?->format('H:i') ?? '-' }}</td><td class="px-3 py-4">{{ $transaksi->durasi_jam ? $transaksi->durasi_jam.' jam' : $transaksi->hitungDurasi().' jam berjalan' }}</td><td class="px-3 py-4 font-medium">{{ $transaksi->status === 'keluar' ? $transaksi->total_format : '-' }}</td><td class="px-5 py-4"><span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $transaksi->status === 'keluar' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">{{ $transaksi->status === 'keluar' ? 'Selesai' : 'Sedang Parkir' }}</span></td><td class="px-3 py-4">@if($transaksi->status==='keluar')<a title="Cetak ulang" href="{{ route('petugas.struk',$transaksi->id) }}" class="text-slate-500 hover:text-blue-600"><i data-lucide="printer" class="h-4 w-4"></i></a>@endif</td></tr>@empty<tr><td colspan="8" class="px-5 py-12 text-center text-slate-400">Belum ada transaksi hari ini.</td></tr>@endforelse</tbody></table></div></section>
++</div>
++<script>function switchTab(tab){document.getElementById('panel-masuk').classList.toggle('hidden',tab!=='masuk');document.getElementById('panel-keluar').classList.toggle('hidden',tab!=='keluar');document.querySelectorAll('.tab-button').forEach(button=>button.classList.remove('bg-white','text-blue-700','shadow-sm'));document.getElementById('tab-'+tab).classList.add('bg-white','text-blue-700','shadow-sm')}switchTab(new URLSearchParams(location.search).get('tab')||'masuk');lucide.createIcons();</script>
++@endsection

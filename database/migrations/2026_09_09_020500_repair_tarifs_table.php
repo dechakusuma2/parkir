@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /** Membuat tabel tarif hanya jika migrasi sebelumnya belum membuatnya. */
     public function up(): void
     {
-        if (!Schema::hasTable('tarifs')) {
+        if (! Schema::hasTable('tarifs')) {
             Schema::create('tarifs', function (Blueprint $table) {
                 $table->id();
                 $table->string('jenis_kendaraan')->unique();
@@ -19,6 +20,7 @@ return new class extends Migration
         }
     }
 
+    /** Tidak menghapus tabel karena migrasi utama bertanggung jawab atas tabel tarif. */
     public function down(): void
     {
         // The canonical tarif migration owns this table.

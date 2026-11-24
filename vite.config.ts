@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import {defineConfig, Plugin} from 'vite';
 
+// Menyediakan media statis AI Studio yang aman dari traversal direktori.
 // LINT.IfChange(aistudio_media_plugin)
 function aistudioMediaPlugin(): Plugin {
   return {
@@ -65,6 +66,7 @@ function aistudioMediaPlugin(): Plugin {
 // LINT.ThenChange(//depot/google3/java/com/google/alkali/boq/makersuite/applet_dev_service/templates/initializers/react_theme/vite.config.ts:aistudio_media_plugin)
 
 export default defineConfig(() => {
+  // Menggabungkan plugin React, Tailwind, pemuatan media, dan konfigurasi server.
   return {
     plugins: [react(), tailwindcss(), aistudioMediaPlugin()],
     resolve: {

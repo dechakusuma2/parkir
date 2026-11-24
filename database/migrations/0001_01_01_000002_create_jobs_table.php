@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Membuat tabel antrean, batch job, dan catatan job yang gagal.
     /**
      * Run the migrations.
      */
@@ -47,6 +48,7 @@ return new class extends Migration
         });
     }
 
+    // Menghapus seluruh tabel antrean yang dibuat migrasi ini saat rollback.
     /**
      * Reverse the migrations.
      */

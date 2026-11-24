@@ -1,19 +1,17 @@
-@extends('layouts.app')
+{{-- Menampilkan daftar kendaraan, pencarian, status parkir, dan aksi pengelolaan. --}}
+@extends('layouts.admin')
 @section('title', 'Kendaraan')
 @section('page-title', 'Data Kendaraan')
-@section('sidebar') @show
-
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold mb-0" style="color:var(--primary);">
         <i class="bi bi-car-front-fill"></i> Data Kendaraan
     </h5>
-    <a href="/admin/kendaraans/create" class="btn btn-primary-custom">
-        <i class="bi bi-plus-circle"></i> Tambah Kendaraan
-    </a>
+    
 </div>
 
 <div class="card card-custom p-4 mb-4">
+    {{-- Form ini mengirimkan kata kunci pencarian kendaraan melalui query string. --}}
     <form method="GET" action="/admin/kendaraans">
         <div class="input-group">
             <input type="text" name="search" class="form-control"
@@ -25,6 +23,7 @@
 </div>
 
 <div class="card card-custom p-4">
+    {{-- Tabel merangkum kendaraan beserta status aktif dan tindakan admin. --}}
     <div class="table-responsive">
         <table class="table table-custom table-hover">
             <thead>

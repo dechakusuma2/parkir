@@ -7,7 +7,9 @@ interface BottomNavProps {
   onTabChange: (tab: NavTab) => void;
 }
 
+/** Menampilkan tombol navigasi bawah dan menandai tab yang sedang aktif. */
 export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onTabChange }) => {
+  // Mendefinisikan label dan ikon untuk setiap tab utama aplikasi.
   const tabs = [
     {
       id: 'overview' as NavTab,

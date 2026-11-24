@@ -10,6 +10,7 @@ interface QrisModalProps {
   onPaymentSuccess: () => void;
 }
 
+/** Menampilkan ringkasan pembayaran QRIS dan simulasi batas waktu pemindaian. */
 export const QrisModal: React.FC<QrisModalProps> = ({
   isOpen,
   onClose,
@@ -21,6 +22,7 @@ export const QrisModal: React.FC<QrisModalProps> = ({
   const [countdown, setCountdown] = useState(180);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Memulai ulang hitung mundur saat modal dibuka dan membersihkan timer saat ditutup.
   useEffect(() => {
     if (!isOpen) return;
     setCountdown(180);
@@ -33,10 +35,12 @@ export const QrisModal: React.FC<QrisModalProps> = ({
 
   if (!isOpen) return null;
 
+  // Menyusun sisa waktu menjadi format menit dan detik untuk ditampilkan.
   const minutes = Math.floor(countdown / 60);
   const seconds = countdown % 60;
   const timeFormatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
+  // Menyimulasikan pembayaran berhasil lalu memberi tahu pemanggil.
   const handleSimulateScan = () => {
     setIsProcessing(true);
     setTimeout(() => {

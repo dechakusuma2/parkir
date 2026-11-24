@@ -1,3 +1,4 @@
+{{-- Komponen bersama untuk memasukkan identitas, kata sandi, dan peran akun. --}}
 <div class="mb-3">
     <label class="form-label fw-semibold">Nama Lengkap <span class="text-danger">*</span></label>
     <input type="text" name="name" class="form-control" value="{{ old('name', $user->name ?? '') }}" required>

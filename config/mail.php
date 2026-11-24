@@ -1,5 +1,6 @@
 <?php
 
+// Mengonfigurasi mailer, transport email, dan alamat pengirim default.
 return [
 
     /*

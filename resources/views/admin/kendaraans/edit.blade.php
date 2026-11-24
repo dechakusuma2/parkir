@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan formulir untuk memperbarui data kendaraan yang dipilih. --}}
+@extends('layouts.admin')
 @section('title', 'Edit Kendaraan')
 @section('page-title', 'Edit Kendaraan')
-@section('sidebar') @show
-
 @section('content')
 <div class="card card-custom p-4" style="max-width:700px;">
     <h5 class="fw-bold mb-4" style="color:var(--primary);">
@@ -10,6 +9,7 @@
     </h5>
     <form action="/admin/kendaraans/{{ $kendaraan->id }}" method="POST">
         @csrf @method('PUT')
+        {{-- Menggunakan kembali bidang kendaraan bersama untuk tambah dan edit. --}}
         @include('admin.kendaraans._form')
         <div class="d-flex gap-2 mt-4">
             <button class="btn btn-primary-custom"><i class="bi bi-save"></i> Update</button>

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Membuat tabel pengguna, token reset kata sandi, dan sesi aplikasi.
     /**
      * Run the migrations.
      */
@@ -38,6 +39,7 @@ return new class extends Migration
         });
     }
 
+    // Menghapus tabel yang dibuat oleh migrasi ini saat proses rollback.
     /**
      * Reverse the migrations.
      */

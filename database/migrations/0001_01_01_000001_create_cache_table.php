@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Membuat tabel penyimpanan cache dan kunci cache berbasis basis data.
     /**
      * Run the migrations.
      */
@@ -24,6 +25,7 @@ return new class extends Migration
         });
     }
 
+    // Menghapus tabel cache saat proses rollback.
     /**
      * Reverse the migrations.
      */

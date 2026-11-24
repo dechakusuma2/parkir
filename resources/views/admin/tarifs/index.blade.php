@@ -1,8 +1,7 @@
-@extends('layouts.app')
+{{-- Menampilkan tarif parkir per jenis kendaraan beserta aksi edit dan hapus. --}}
+@extends('layouts.admin')
 @section('title', 'Tarif Parkir')
 @section('page-title', 'Tarif Parkir')
-@section('sidebar') @show
-
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold mb-0" style="color:var(--primary);">
@@ -14,28 +13,22 @@
 </div>
 
 <div class="row g-4">
+    {{-- Setiap kartu berisi tarif satu kategori kendaraan atau pesan tanpa data. --}}
     @forelse($tarifs as $tarif)
     <div class="col-md-4">
-        <div class="card card-custom p-4 h-100">
+        <div class="card card-custom p-4 h-100 admin-tarif-card">
             <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="rounded-circle d-flex align-items-center justify-content-center"
-                     style="width:50px;height:50px;background:rgba(10,37,64,0.1);">
-                    <span class="fs-3">{{ $tarif->jenisLabel }}</span>
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots-vertical"></i>
+                <div class="admin-card-menu" data-card-menu>
+                    <button type="button" class="admin-card-menu-button" data-menu-toggle aria-label="Buka menu tarif">
+                        <i data-lucide="more-vertical"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/admin/tarifs/{{ $tarif->id }}/edit">
-                            <i class="bi bi-pencil"></i> Edit</a></li>
-                        <li>
-                            <form action="/admin/tarifs/{{ $tarif->id }}" method="POST" onsubmit="return confirm('Hapus tarif ini?')">
-                                @csrf @method('DELETE')
-                                <button class="dropdown-item text-danger"><i class="bi bi-trash"></i> Hapus</button>
-                            </form>
-                        </li>
-                    </ul>
+                    <div class="admin-card-menu-panel" data-menu-panel>
+                        <a href="/admin/tarifs/{{ $tarif->id }}/edit"><i data-lucide="pencil"></i> Edit</a>
+                        <form action="/admin/tarifs/{{ $tarif->id }}" method="POST" onsubmit="return confirm('Hapus tarif ini?')">
+                            @csrf @method('DELETE')
+                            <button type="submit"><i data-lucide="trash-2"></i> Hapus</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <h5 class="fw-bold">{{ ucfirst($tarif->jenis_kendaraan) }}</h5>

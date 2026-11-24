@@ -9,6 +9,7 @@ import { AdminMasterView } from './views/AdminMasterView';
 import { OwnerRekapView } from './views/OwnerRekapView';
 import { CheckCircle2, Info, AlertTriangle, X } from 'lucide-react';
 
+/** Mengelola navigasi demo, peran aktif, tampilan halaman, dan notifikasi toast. */
 export default function App() {
   const [currentTab, setCurrentTab] = useState<NavTab>('overview');
   const [currentRole, setCurrentRole] = useState<UserRole>('petugas');
@@ -19,11 +20,13 @@ export default function App() {
     type: 'success' | 'info' | 'error';
   } | null>(null);
 
+  // Menampilkan pesan sementara dengan jenis notifikasi yang dipilih.
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'info') => {
     const id = Date.now();
     setToast({ id, message, type });
   };
 
+  // Menghapus notifikasi beberapa saat setelah notifikasi ditampilkan.
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => {
@@ -33,6 +36,7 @@ export default function App() {
     }
   }, [toast]);
 
+  // Memilih peran dan membuka tab awal yang sesuai dengan peran tersebut.
   const handleSelectRole = (role: UserRole) => {
     setCurrentRole(role);
     if (role === 'petugas') {
@@ -45,11 +49,13 @@ export default function App() {
     showToast(`Beralih ke mode ${role.toUpperCase()}`, 'success');
   };
 
+  // Mengatur peran dan halaman tujuan setelah simulasi login berhasil.
   const handleLoginRole = (role: UserRole, targetTab: NavTab) => {
     setCurrentRole(role);
     setCurrentTab(targetTab);
   };
 
+  // Mengembalikan pengguna ke halaman ringkasan saat sesi demo ditutup.
   const handleLogout = () => {
     setCurrentTab('overview');
     showToast('Sesi ditutup, kembali ke portal utama', 'info');
